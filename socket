@@ -1,0 +1,102 @@
+--------------------- Socket.io -----------------
+
+
+frontend 
+
+----- To Generate Request
+
+
+1) Install the Pacakge "socket.io-client"
+2)  Install the Pacakge "socket.io-client"
+
+3) set your base url like this - 
+
+ const socket = socketIOClient("your base url");
+
+4)  socket.emit("your key", "your value");
+
+ex. -  socket.emit("test_msg_Request", "Hello World");
+
+
+backend 
+
+
+
+
+--------  to accept request
+
+
+1) install package socket.io 
+2) const socketIo = require("socket.io");
+
+3) use the code 
+
+const corsOpts = {
+    origin: '*',
+
+    methods: [
+        'GET',
+        'POST',
+    ],
+
+    allowedHeaders: [
+        "Access-Control-Allow-Headers",
+        "x-access-token, Origin, Content-Type, Accept", "authorization",
+    ],
+};
+app.use(cors(corsOpts));
+
+
+4) create a server
+
+const server = http.createServer(app);
+const io = socketIo(server, {
+    cors: {
+        origin: "*",
+        credentials: true
+    }
+});
+
+
+5) use io.on method for create a connection and  accept request which come from frontend   
+
+
+
+io.on("connection", (socket) => {
+    // console.log('New user connected shakir---');
+
+    socket.on("Your_Request_key", (data) => {
+        socket.broadcast.emit("test_msg_Response", data);
+    });
+}
+
+
+
+example 
+
+io.on("connection", (socket) => {
+    // console.log('New user connected shakir---');
+
+    socket.on("test_msg_Request", (data) => {
+        socket.broadcast.emit("test_msg_Response", data);
+    });
+}
+
+
+
+
+frontend 
+
+----- To Accept Request from backend
+
+
+1) Install the Pacakge "socket.io-client"
+2) const socketIo = require("socket.io");
+3) set your base url like this - 
+
+    const socket = socketIOClient('your base url');
+
+4)       socket.on("Response_key", (data) => {
+       console.log("res_pendingwithdraw_accept_message", data);
+
+               }
